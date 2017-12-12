@@ -1,0 +1,32 @@
+﻿<Page x:Class="Converter.Views.ConverterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      Style="{StaticResource PageStyle}"
+      Loaded="Page_Loaded"
+      Title="Converter">
+    <Grid x:Name="Grid" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0" Width="200" Header="Conversion Type:" Margin="0,0,0,10" Padding="5">
+            <ComboBox x:Name="CmbConversionType" Width="150" SelectionChanged="CmbConversionType_SelectionChanged" Margin="0,0,0,5" />
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Convert From" Margin="0,0,10,0" Padding="5">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="CmbConvertFrom" Grid.Column="0" Grid.Row="2" Width="150" Height="29" SelectionChanged="Cmb_SelectionChanged" Margin="0,0,10,0" />
+                <TextBox x:Name="TxtConvertFrom" Width="200" MaxLength="15" TextChanged="TxtConvertFrom_TextChanged" PreviewKeyDown="TxtConvertFrom_PreviewKeyDown" />
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Convert To" Margin="0,0,10,0" Padding="5">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="CmbConvertTo" Width="150" Height="29" SelectionChanged="Cmb_SelectionChanged" Margin="0,0,10,0" />
+                <TextBox x:Name="TxtConvertTo" Width="200" TextAlignment="Center" IsReadOnly="True" />
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Page>
