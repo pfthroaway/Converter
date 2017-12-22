@@ -12,17 +12,25 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0" Width="200" Header="Conversion Type:" Margin="0,0,0,10" Padding="5">
             <ComboBox x:Name="CmbConversionType" Width="150" SelectionChanged="CmbConversionType_SelectionChanged" Margin="0,0,0,5" />
         </GroupBox>
-        <GroupBox Grid.Row="1" Header="Convert From" Margin="0,0,10,0" Padding="5">
+        <GroupBox Grid.Row="1" Header="Convert From" Margin="0,0,0,10" Padding="5">
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="CmbConvertFrom" Grid.Column="0" Grid.Row="2" Width="150" Height="29" SelectionChanged="Cmb_SelectionChanged" Margin="0,0,10,0" />
                 <TextBox x:Name="TxtConvertFrom" Width="200" MaxLength="15" TextChanged="TxtConvertFrom_TextChanged" PreviewKeyDown="TxtConvertFrom_PreviewKeyDown" />
             </StackPanel>
         </GroupBox>
-        <GroupBox Grid.Row="2" Header="Convert To" Margin="0,0,10,0" Padding="5">
+        <Button x:Name="BtnSwap" Grid.Row="2"  Height="50" Width="50" Click="BtnSwap_Click">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Source="..\Resources\Swap.png" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <GroupBox Grid.Row="3" Header="Convert To" Padding="5">
             <StackPanel Orientation="Horizontal">
                 <ComboBox x:Name="CmbConvertTo" Width="150" Height="29" SelectionChanged="Cmb_SelectionChanged" Margin="0,0,10,0" />
                 <TextBox x:Name="TxtConvertTo" Width="200" TextAlignment="Center" IsReadOnly="True" />

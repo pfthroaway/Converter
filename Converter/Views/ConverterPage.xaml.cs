@@ -3,6 +3,7 @@ using Converter.Classes.Enums;
 using Extensions;
 using Extensions.DataTypeHelpers;
 using Extensions.Enums;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +14,32 @@ namespace Converter.Views
     public partial class ConverterPage : Page
     {
         #region Display
+
+        /// <summary>Displays Volume conversion units.</summary>
+        private void DisplayDistance()
+        {
+            TxtConvertFrom.Text = "";
+            CmbConvertFrom.Items.Clear();
+            CmbConvertTo.Items.Clear();
+            CmbConvertFrom.Items.Add("Millimeter");
+            CmbConvertFrom.Items.Add("Centimeter");
+            CmbConvertFrom.Items.Add("Inch");
+            CmbConvertFrom.Items.Add("Foot");
+            CmbConvertFrom.Items.Add("Yard");
+            CmbConvertFrom.Items.Add("Meter");
+            CmbConvertFrom.Items.Add("Kilometer");
+            CmbConvertFrom.Items.Add("Mile");
+            CmbConvertTo.Items.Add("Millimeter");
+            CmbConvertTo.Items.Add("Centimeter");
+            CmbConvertTo.Items.Add("Inch");
+            CmbConvertTo.Items.Add("Foot");
+            CmbConvertTo.Items.Add("Yard");
+            CmbConvertTo.Items.Add("Meter");
+            CmbConvertTo.Items.Add("Kilometer");
+            CmbConvertTo.Items.Add("Mile");
+            CmbConvertFrom.SelectedIndex = 0;
+            CmbConvertTo.SelectedIndex = 0;
+        }
 
         /// <summary>Displays Mass conversion units.</summary>
         private void DisplayMass()
@@ -70,15 +97,277 @@ namespace Converter.Views
             switch (EnumHelper.Parse<Types>(CmbConversionType.SelectedItem.ToString()))
             {
                 case Types.Mass:
-                    TxtConvertTo.Text = TxtConvertFrom.Text.Length > 0 ? (DecimalHelper.Parse(TxtConvertFrom.Text) * ConvertMass(EnumHelper.Parse<Mass>(CmbConvertFrom.SelectedItem.ToString()), EnumHelper.Parse<Mass>(CmbConvertTo.SelectedItem.ToString()))).ToString() : "0";
+                    TxtConvertTo.Text = TxtConvertFrom.Text.Length > 0 ? Math.Round(decimal.Multiply(DecimalHelper.Parse(TxtConvertFrom.Text), ConvertMass(EnumHelper.Parse<Mass>(CmbConvertFrom.SelectedItem.ToString()), EnumHelper.Parse<Mass>(CmbConvertTo.SelectedItem.ToString()))), 9, MidpointRounding.AwayFromZero).ToString() : "0";
                     break;
 
                 case Types.Volume:
-                    TxtConvertTo.Text = TxtConvertFrom.Text.Length > 0 ? (DecimalHelper.Parse(TxtConvertFrom.Text) * ConvertVolume(EnumHelper.Parse<Volume>(CmbConvertFrom.SelectedItem.ToString().Replace(" ", "")), EnumHelper.Parse<Volume>(CmbConvertTo.SelectedItem.ToString().Replace(" ", "")))).ToString() : "0";
+                    TxtConvertTo.Text = TxtConvertFrom.Text.Length > 0 ? Math.Round(decimal.Multiply(DecimalHelper.Parse(TxtConvertFrom.Text), ConvertVolume(EnumHelper.Parse<Volume>(CmbConvertFrom.SelectedItem.ToString().Replace(" ", "")), EnumHelper.Parse<Volume>(CmbConvertTo.SelectedItem.ToString().Replace(" ", "")))), 9, MidpointRounding.AwayFromZero).ToString() : "0";
                     break;
 
                 case Types.Distance:
+                    TxtConvertTo.Text = TxtConvertFrom.Text.Length > 0 ?
+                      Math.Round(decimal.Multiply(DecimalHelper.Parse(TxtConvertFrom.Text), ConvertDistance(EnumHelper.Parse<Distance>(CmbConvertFrom.SelectedItem.ToString()), EnumHelper.Parse<Distance>(CmbConvertTo.SelectedItem.ToString()))), 9, MidpointRounding.AwayFromZero).ToString() : "0";
                     break;
+            }
+        }
+
+        /// <summary>Converts distance units.</summary>
+        /// <param name="from">Unit of distance being converted from</param>
+        /// <param name="to">Unit of distance being converted to</param>
+        /// <returns></returns>
+        private decimal ConvertDistance(Distance from, Distance to)
+        {
+            switch (from)
+            {
+                case Distance.Millimeter:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 1;
+
+                        case Distance.Centimeter:
+                            return 0.1M;
+
+                        case Distance.Inch:
+                            return Decimal.Divide(1, 25.4M);
+
+                        case Distance.Foot:
+                            return Decimal.Divide(1, 304.8M);
+
+                        case Distance.Yard:
+                            return decimal.Divide(1, 914.4M);
+
+                        case Distance.Meter:
+                            return 0.001M;
+
+                        case Distance.Kilometer:
+                            return 0.000001M;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 1609344);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Centimeter:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 10;
+
+                        case Distance.Centimeter:
+                            return 1;
+
+                        case Distance.Inch:
+                            return decimal.Divide(1, 2.54M);
+
+                        case Distance.Foot:
+                            return decimal.Divide(1, 30.48M);
+
+                        case Distance.Yard:
+                            return decimal.Divide(1, 91.44M);
+
+                        case Distance.Meter:
+                            return 0.01M;
+
+                        case Distance.Kilometer:
+                            return 0.00001M;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 160934.4M);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Inch:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 25.4M;
+
+                        case Distance.Centimeter:
+                            return 2.54M;
+
+                        case Distance.Inch:
+                            return 1;
+
+                        case Distance.Foot:
+                            return decimal.Divide(1, 12);
+
+                        case Distance.Yard:
+                            return decimal.Divide(1, 36);
+
+                        case Distance.Meter:
+                            return 0.0254M;
+
+                        case Distance.Kilometer:
+                            return 0.0000254M;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 63360);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Foot:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 304.8M;
+
+                        case Distance.Centimeter:
+                            return 30.48M;
+
+                        case Distance.Inch:
+                            return 12;
+
+                        case Distance.Foot:
+                            return 1;
+
+                        case Distance.Yard:
+                            return decimal.Divide(1, 3);
+
+                        case Distance.Meter:
+                            return 0.3048M;
+
+                        case Distance.Kilometer:
+                            return 0.0003048M;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 5280);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Yard:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 914.4M;
+
+                        case Distance.Centimeter:
+                            return 91.44M;
+
+                        case Distance.Inch:
+                            return 36;
+
+                        case Distance.Foot:
+                            return 3;
+
+                        case Distance.Yard:
+                            return 1;
+
+                        case Distance.Meter:
+                            return 0.9144M;
+
+                        case Distance.Kilometer:
+                            return 0.0009144M;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 1760);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Meter:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 1000;
+
+                        case Distance.Centimeter:
+                            return 100;
+
+                        case Distance.Inch:
+                            return decimal.Divide(1, 0.0254M);
+
+                        case Distance.Foot:
+                            return decimal.Divide(1, 0.3048M);
+
+                        case Distance.Yard:
+                            return decimal.Divide(1, 0.9144M);
+
+                        case Distance.Meter:
+                            return 1;
+
+                        case Distance.Kilometer:
+                            return 0.001M;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 1609.344M);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Kilometer:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 1000000;
+
+                        case Distance.Centimeter:
+                            return 100000;
+
+                        case Distance.Inch:
+                            return decimal.Divide(1, 0.0000254M);
+
+                        case Distance.Foot:
+                            return decimal.Divide(1, 0.0003048M);
+
+                        case Distance.Yard:
+                            return decimal.Divide(1, 0.0009144M);
+
+                        case Distance.Meter:
+                            return 1000;
+
+                        case Distance.Kilometer:
+                            return 1;
+
+                        case Distance.Mile:
+                            return decimal.Divide(1, 1.609344M);
+
+                        default:
+                            return 0;
+                    }
+
+                case Distance.Mile:
+                    switch (to)
+                    {
+                        case Distance.Millimeter:
+                            return 1609344;
+
+                        case Distance.Centimeter:
+                            return 160934.4M;
+
+                        case Distance.Inch:
+                            return 63360;
+
+                        case Distance.Foot:
+                            return 5280;
+
+                        case Distance.Yard:
+                            return 1760;
+
+                        case Distance.Meter:
+                            return 1609.344M;
+
+                        case Distance.Kilometer:
+                            return 1.609344M;
+
+                        case Distance.Mile:
+                            return 1;
+
+                        default:
+                            return 0;
+                    }
+                default:
+                    return 0;
             }
         }
 
@@ -97,10 +386,10 @@ namespace Converter.Views
                             return 1;
 
                         case Mass.Ounce:
-                            return 0.035273962M;
+                            return decimal.Divide(1, 28.349523125M);
 
                         case Mass.Pound:
-                            return 0.002204623M;
+                            return Decimal.Divide(1, 453.59237M);
 
                         case Mass.Kilogram:
                             return 0.001M;
@@ -112,16 +401,16 @@ namespace Converter.Views
                     switch (to)
                     {
                         case Mass.Gram:
-                            return 28.34952313M;
+                            return 28.349523125M;
 
                         case Mass.Ounce:
                             return 1;
 
                         case Mass.Pound:
-                            return 0.0625M;
+                            return decimal.Divide(1, 16);
 
                         case Mass.Kilogram:
-                            return 0.028349523M;
+                            return 0.028349523125M;
 
                         default:
                             return 0;
@@ -133,7 +422,7 @@ namespace Converter.Views
                             return 453.59237M;
 
                         case Mass.Ounce:
-                            return 16M;
+                            return 16;
 
                         case Mass.Pound:
                             return 1;
@@ -148,13 +437,13 @@ namespace Converter.Views
                     switch (to)
                     {
                         case Mass.Gram:
-                            return 1000M;
+                            return 1000;
 
                         case Mass.Ounce:
-                            return 35.27396195M;
+                            return decimal.Divide(1, 0.028349523125M);
 
                         case Mass.Pound:
-                            return 2.204622622M;
+                            return decimal.Divide(1, 0.45359237M);
 
                         case Mass.Kilogram:
                             return 1;
@@ -491,13 +780,14 @@ namespace Converter.Views
 
         public ConverterPage() => InitializeComponent();
 
-        private void TxtConvertFrom_TextChanged(object sender, TextChangedEventArgs e)
+        private void BtnSwap_Click(object sender, RoutedEventArgs e)
         {
-            Functions.TextBoxTextChanged(sender, KeyType.Decimals);
-            Convert();
+            string to = TxtConvertTo.Text;
+            int indexFrom = CmbConvertFrom.SelectedIndex;
+            CmbConvertFrom.SelectedIndex = CmbConvertTo.SelectedIndex;
+            CmbConvertTo.SelectedIndex = indexFrom;
+            TxtConvertFrom.Text = to;
         }
-
-        private void TxtConvertFrom_PreviewKeyDown(object sender, KeyEventArgs e) => Functions.PreviewKeyDown(e, KeyType.Decimals);
 
         private void Cmb_SelectionChanged(object sender, SelectionChangedEventArgs e) => Convert();
 
@@ -514,10 +804,18 @@ namespace Converter.Views
                     break;
 
                 case Types.Distance:
-                    //DisplayDistance();
+                    DisplayDistance();
                     break;
             }
         }
+
+        private void TxtConvertFrom_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Functions.TextBoxTextChanged(sender, KeyType.Decimals);
+            Convert();
+        }
+
+        private void TxtConvertFrom_PreviewKeyDown(object sender, KeyEventArgs e) => Functions.PreviewKeyDown(e, KeyType.Decimals);
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
